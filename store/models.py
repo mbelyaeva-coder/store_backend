@@ -6,11 +6,16 @@ class Store(models.Model):
     title = models.CharField(max_length=255)
 
 
+class Category(models.Model):
+    title = models.CharField(max_length=255)
+
+
 class Product(models.Model):
     title = models.CharField(max_length=255)
     store = models.ForeignKey(Store, on_delete=models.PROTECT, related_name='products')
     price = models.DecimalField(max_digits=6, decimal_places=2)
     quantity_in_stock = models.IntegerField()
+    category = models.ForeignKey(Category, on_delete=models.PROTECT, related_name='products')
 
 
 class Customer(models.Model):
