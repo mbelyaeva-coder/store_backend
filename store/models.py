@@ -16,6 +16,15 @@ class Product(models.Model):
 class Customer(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return f'{self.user.first_name} {self.user.last_name}'
+
+    def first_name(self):
+        return self.user.first_name
+
+    def last_name(self):
+        return self.user.last_name
+
 
 class OrderItem(models.Model):
     product = models.ForeignKey(Product, on_delete=models.PROTECT, related_name='order_items')
