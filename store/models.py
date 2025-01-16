@@ -1,16 +1,39 @@
 from django.db import models
+from django.conf import settings
 
 
-class Collection(models.Model):
+class Store(models.Model):
     title = models.CharField(max_length=255)
 
 
 class Product(models.Model):
     title = models.CharField(max_length=255)
-    collection = models.ForeignKey(Collection, on_delete=models.PROTECT)
+    store = models.ForeignKey(Store, on_delete=models.PROTECT)
     price = models.DecimalField(max_digits=6, decimal_places=2)
     quantity_in_stock = models.IntegerField()
 
 
 class Customer(models.Model):
-    name = models.CharField(max_length=255)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+
+
+class OrderItem(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.PROTECT)
+    price = models.DecimalField(max_digits=6, decimal_places=2)
+    quantity = models.IntegerField()
+    order = models.ForeignKey('Order', on_delete=models.PROTECT)
+
+
+class Order(models.Model):
+    customer = models.ForeignKey(Customer, on_delete=models.PROTECT)
+    date = models.DateTimeField(auto_now_add=True)
+
+
+class Cart(models.Model):
+    created = models.DateTimeField(auto_now_add=True)
+
+
+class CartItem(models.Model):
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    quantity = models.IntegerField()
