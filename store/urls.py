@@ -8,5 +8,6 @@ router.register(r'customers', views.CustomerViewSet, basename='customers')
 
 stores_router = routers.NestedDefaultRouter(router, r'stores', lookup='store')
 stores_router.register(r'products', views.ProductViewSet, basename='store_products')
+stores_router.register(r'images', views.StoreImageViewSet, basename='store_images')
 
 urlpatterns = router.urls+stores_router.urls

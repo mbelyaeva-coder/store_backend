@@ -1,12 +1,23 @@
 from rest_framework import serializers
 
-from store.models import Store, Product, Customer
+from store.models import Store, Product, Customer, StoreImage
+
+
+class StoreImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = StoreImage
+        fields = ['image']
+
+    def create(self, validated_data):
+        store_image = StoreImage.objects.create(store_id= self.context['store_id'], **validated_data)
+        return store_image
 
 
 class StoreSerializer(serializers.ModelSerializer):
+    images = StoreImageSerializer(many=True, read_only=True)
     class Meta:
         model = Store
-        fields = ['id', 'title']
+        fields = ['id', 'title', 'images']
 
 
 class ProductSerializer(serializers.ModelSerializer):

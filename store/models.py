@@ -10,7 +10,7 @@ class Store(models.Model):
 
 
 class StoreImage(models.Model):
-    store = models.ForeignKey(Store, on_delete=models.CASCADE)
+    store = models.ForeignKey(Store, on_delete=models.CASCADE, related_name='images')
     image = models.ImageField(upload_to='store/images')
 
 
