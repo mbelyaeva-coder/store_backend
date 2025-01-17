@@ -1,12 +1,13 @@
 from rest_framework import serializers
 
-from store.models import Store, Product, Customer, StoreImage
+from store.models import Store, Product, Customer, StoreImage, ProductImage
 
 
 class StoreImageSerializer(serializers.ModelSerializer):
+    store_id = serializers.IntegerField(read_only=True)
     class Meta:
         model = StoreImage
-        fields = ['image']
+        fields = ['id', 'image', 'store_id']
 
     def create(self, validated_data):
         store_image = StoreImage.objects.create(store_id= self.context['store_id'], **validated_data)
@@ -20,11 +21,23 @@ class StoreSerializer(serializers.ModelSerializer):
         fields = ['id', 'title', 'images']
 
 
+class ProductImageSerializer(serializers.ModelSerializer):
+    product_id = serializers.IntegerField(read_only=True)
+    class Meta:
+        model = ProductImage
+        fields = ['id', 'image', 'product_id']
+
+    def create(self, validated_data):
+        product_image = ProductImage.objects.create(product_id= self.context['product_id'], **validated_data)
+        return product_image
+
+
 class ProductSerializer(serializers.ModelSerializer):
     store = StoreSerializer(read_only=True)
+    images = ProductImageSerializer(many=True, read_only=True)
     class Meta:
         model = Product
-        fields = ['id', 'title', 'store', 'price', 'quantity_in_stock', 'category']
+        fields = ['id', 'title', 'store', 'price', 'quantity_in_stock', 'category', 'images']
 
     def create(self, validated_data):
         store_id=self.context['store_id']

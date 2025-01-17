@@ -9,6 +9,7 @@ class ProductAdmin(admin.ModelAdmin):
     list_display = ['id', 'title', 'price', 'store', 'quantity_in_stock', 'category']
     list_per_page = 10
     list_editable = ['title', 'price', 'store', 'quantity_in_stock', 'category']
+    search_fields = ['id', 'title']
 
 
 @admin.register(models.Category)

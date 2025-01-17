@@ -32,6 +32,11 @@ class Product(models.Model):
         return self.title
 
 
+class ProductImage(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.PROTECT, related_name='images')
+    image = models.ImageField(upload_to='store/images')
+
+
 class Customer(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
