@@ -15,9 +15,13 @@ class StoreViewSet(viewsets.ModelViewSet):
 
 class ProductViewSet(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
+    permission_classes = [IsAdminOrReadOnly]
+
     def get_queryset(self):
         return Product.objects.filter(store_id=self.kwargs['store_pk'])
-    permission_classes = [IsAdminOrReadOnly]
+
+    def get_serializer_context(self):
+        return {'store_id': self.kwargs['store_pk']}
 
 
 class CustomerViewSet(viewsets.ModelViewSet):

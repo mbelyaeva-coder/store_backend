@@ -5,9 +5,20 @@ from django.conf import settings
 class Store(models.Model):
     title = models.CharField(max_length=255)
 
+    def __str__(self):
+        return self.title
+
+
+class StoreImage(models.Model):
+    store = models.ForeignKey(Store, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='store/images')
+
 
 class Category(models.Model):
     title = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.title
 
 
 class Product(models.Model):
@@ -16,6 +27,9 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=6, decimal_places=2)
     quantity_in_stock = models.IntegerField()
     category = models.ForeignKey(Category, on_delete=models.PROTECT, related_name='products')
+
+    def __str__(self):
+        return self.title
 
 
 class Customer(models.Model):
